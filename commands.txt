@@ -1,0 +1,3 @@
+test: | ls | echo hehe |
+test1: | ls | echo hehe |
+test2: | ls | echo hehe |
