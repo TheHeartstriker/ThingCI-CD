@@ -13,6 +13,7 @@ type model struct {
 	Tabs       []string
 	TabContent []string
 	activeTab  int
+	
 }
 
 func (m model) Init() tea.Cmd {
@@ -50,11 +51,14 @@ var (
 	activeTabBorder   = tabBorderWithBottom("┘", " ", "└")
 	docStyle          = lipgloss.NewStyle().Padding(1, 2, 1, 2)
 	highlightColor    = lipgloss.AdaptiveColor{Light: "#874BFD", Dark: "#7D56F4"}
-	inactiveTabStyle  = lipgloss.NewStyle().Border(inactiveTabBorder, true).BorderForeground(highlightColor).Padding(0, 1)
+	inactiveTabStyle  = lipgloss.NewStyle().Border(inactiveTabBorder, true).BorderForeground(highlightColor).Padding(0, 1). Width(20). Height(2)
     activeTabStyle    = inactiveTabStyle.
         Border(activeTabBorder, true).
-        BorderForeground(lipgloss.Color("69")) 
-	windowStyle       = lipgloss.NewStyle().BorderForeground(highlightColor).Padding(2, 0).Align(lipgloss.Center).Border(lipgloss.NormalBorder()).UnsetBorderTop()
+        BorderForeground(lipgloss.Color("69")).
+		Width(20).
+		Height(2)
+	windowStyle       = lipgloss.NewStyle().BorderForeground(highlightColor).Padding(2, 0).Align(lipgloss.Left).Border(lipgloss.NormalBorder()).UnsetBorderTop()
+	
 )
 
 func (m model) View() string {
@@ -87,13 +91,13 @@ func (m model) View() string {
 	row := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
 	doc.WriteString(row)
 	doc.WriteString("\n")
-	doc.WriteString(windowStyle.Width((lipgloss.Width(row) - windowStyle.GetHorizontalFrameSize())).Render(m.TabContent[m.activeTab]))
+	doc.WriteString(windowStyle.Width((lipgloss.Width(row) - windowStyle.GetHorizontalFrameSize())).Render(m.TabContent[m.activeTab]) )
 	return docStyle.Render(doc.String())
 }
 
 func Main() {
-	tabs := []string{"Commands", "Help", "Setttings"}
-	tabContent := []string{}
+	tabs := []string{"Commands", "Help", "Setttings", "Supported commands"}
+	tabContent := []string{"", Help, "", ""}
 	m := model{Tabs: tabs, TabContent: tabContent}
 	if _, err := tea.NewProgram(m).Run(); err != nil {
 		fmt.Println("Error running program:", err)
