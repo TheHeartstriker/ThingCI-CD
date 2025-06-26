@@ -96,8 +96,8 @@ func (m model) View() string {
 }
 
 func Main() {
-	tabs := []string{"Commands", "Help", "Setttings", "Supported commands"}
-	tabContent := []string{"", Help, "", ""}
+	tabs := []string{"Commands", "Help", "Supported commands"}
+	tabContent := []string{"", Help, ""}
 	m := model{Tabs: tabs, TabContent: tabContent}
 	if _, err := tea.NewProgram(m).Run(); err != nil {
 		fmt.Println("Error running program:", err)
