@@ -1,5 +1,10 @@
 package viewCmd
 
+import (
+	"modules/internals/globals"
+	"strconv"
+)
+
 const Help = `
 Purpose:
 This is a simple command line application that allows running multiple commands from a single name defined in commands.txt this can include multiple or chained commands.
@@ -10,3 +15,23 @@ Special commands:
 Special commands are commands that are in the specialCommands.txt file, also shown in the help special commands tab. What these do are commands that are supported by the application itself and they simplfie the commands and organization fo the related information. 
 This can of course be ignored by the user if they want by simply running the command as is, but it is recommended to use the special commands as they are more organized and easier to use for most users.
 `
+
+
+func CommandsToString() string  {
+	commands := ""
+    for i := 0; i < len(globals.GCmdDetails); i++ {
+        temp := globals.GCmdDetails[i]
+        commandString := temp["name"] + ": "
+        for j := 1; j < len(temp); j++ {
+            key := "command" + strconv.Itoa(j)
+            val, ok := temp[key]
+            if !ok {
+                break
+            }
+            commandString += val + " | "
+        }
+        commands += commandString + "\n"
+    }
+	return commands
+
+}
